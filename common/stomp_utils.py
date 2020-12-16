@@ -1,6 +1,8 @@
 from stomp import utils
 from stomp.utils import convert_frame, pack, encode, HDR_CONTENT_LENGTH
 
+from common.byte_utils import bytes_to_hex_string
+
 CMD_ABORT = "ABORT"
 CMD_ACK = "ACK"
 CMD_BEGIN = "BEGIN"
@@ -12,9 +14,8 @@ CMD_STOMP = "STOMP"
 CMD_SEND = "SEND"
 CMD_SUBSCRIBE = "SUBSCRIBE"
 CMD_UNSUBSCRIBE = "UNSUBSCRIBE"
-ENC_NEWLINE = encode("\n")
-ENC_NULL = b""
-
+ENC_NEWLINE = encode("\\n")
+ENC_NULL = encode("\\u0000")
 
 
 def convert_frame(frame):
@@ -43,7 +44,7 @@ def convert_frame(frame):
         if type(vals) != tuple:
             vals = (vals,)
         for val in vals:
-            lines.append(encode("%s:%s\n" % (key, val)))
+            lines.append(encode("%s:%s\\n" % (key, val)))
     lines.append(ENC_NEWLINE)
     if body:
         lines.append(body)
@@ -51,8 +52,6 @@ def convert_frame(frame):
     if frame.cmd:
         lines.append(ENC_NULL)
     return lines
-
-
 
 
 def send_frame(cmd, headers=None, body=''):
@@ -66,11 +65,9 @@ def send_frame(cmd, headers=None, body=''):
     """
     frame = utils.Frame(cmd, headers, body)
     binary_list = []
-    binary_list.append('['.encode(encoding="utf-8"))
-    binary_list.append('"'.encode(encoding="utf-8"))
+    binary_list.append('["'.encode(encoding="utf-8"))
     binary_list.extend(convert_frame(frame))
-    binary_list.append('"'.encode(encoding="utf-8"))
-    binary_list.append(']'.encode(encoding="utf-8"))
+    binary_list.append('"]'.encode(encoding="utf-8"))
     return pack(binary_list)
 
 
@@ -78,11 +75,10 @@ def send_frame(cmd, headers=None, body=''):
 
 
 if __name__ =="__main__":
-    result = send_frame(CMD_CONNECT,{
-        "accept-version":"1.1",
-        "heart-beat":"10000,10000"
+    result = send_frame(CMD_CONNECT, {
+        "accept-version": "1.1,1.0",
+        "heart-beat": "10000,10000"
     })
     print(result)
-    print("\u0000")
-
+    print(bytes_to_hex_string(result))
 

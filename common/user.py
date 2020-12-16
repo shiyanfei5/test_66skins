@@ -9,7 +9,8 @@ from common.bag import Bag
 
 class User(object):
 
-    def __init__(self, acct_id, pass_word, _requests=None):
+    def __init__(self, user_id, acct_id, pass_word, _requests=None):
+        self.user_id = user_id
         self.account_id = acct_id
         self.pass_word = pass_word
         self.token = None

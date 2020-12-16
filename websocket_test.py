@@ -65,12 +65,12 @@ class WebSocketClient(object):
 
         def run(*args):
                 result = send_frame(CMD_CONNECT, {
-                    "accept-version": "1.1",
+                    "accept-version": "1.1,1.0",
                     "heart-beat": "10000,10000"
                 })
                 print(result)
                 # ws.send(result, ABNF.OPCODE_BINARY)
-                ws.send('CONNECT\naccept-version:1.1\nheart-beat:10000,10000"')
+                ws.send(result)
                 time.sleep(1)
                 # ws.send("SUBSCRIBE\nid:sub-0\ndestination:/user/notice\n\n\u0000")
                 time.sleep(1)
@@ -83,5 +83,5 @@ class WebSocketClient(object):
         t.start()
 
 
-socket_client = WebSocketClient("wss://api.66skins.com/users-ws/websocket/323/kgyhw40w/websocket?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDA4MzYyMiIsInN5c3RlbXR5cGUiOiJ3ZWIiLCJleHAiOjE2MDgxMzU2MzEsInVzZXJpZCI6bnVsbCwiY3JlYXRlZCI6MTYwODA0OTIzMTQ3NCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6InNob3dSb2xsVXNlciJ9XX0.6v9oa40gPCT6WLEykljxxvwS3A413-NnnMb6wR-JkyGhRyR4iFgGGdrZyt-oTaUN2bssNkazDbrZv4IowAK9vw", True)
+socket_client = WebSocketClient("ws://www.ynkyt.cn/boxs/users-ws/websocket/728/s14rg2nm/websocket?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1MTg2NzIxMiIsInN5c3RlbXR5cGUiOiJ3ZWIiLCJleHAiOjE2MDgyMDUyMjAsInVzZXJpZCI6bnVsbCwiY3JlYXRlZCI6MTYwODExODgyMDMwNSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6InNob3dSb2xsVXNlciJ9XX0.WU7W3NqxR-Z96zL6ayulRzHP6d4QfsRpCe-fq854DGPmCH1UQZqRDAQpc6vWWqJ7kMPPgTzWrggKfwfQzVZOOA", True)
 
